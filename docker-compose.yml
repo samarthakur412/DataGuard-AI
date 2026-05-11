@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 6260347112S@m
+      POSTGRES_PASSWORD: **********
       POSTGRES_DB: dataguard
     ports:
       - "5432:5432"
@@ -28,7 +28,7 @@ services:
       DB_HOST: postgres
       DB_NAME: dataguard
       DB_USER: postgres
-      DB_PASSWORD: 6260347112S@m
+      DB_PASSWORD: ********
       DB_PORT: 5432
       
 
