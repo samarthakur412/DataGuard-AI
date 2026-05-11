@@ -16,7 +16,7 @@ from utils.db import get_connection
 #     host="localhost",
 #     database="dataguard",
 #     user="postgres",
-#     password="6260347112S@m",
+#     password="*******",
 #     port="5432"
 # )
 conn = get_connection()
