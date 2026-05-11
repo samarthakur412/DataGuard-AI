@@ -326,14 +326,19 @@ This project demonstrates:
 
 Add screenshots here:
 
-```text
-screenshots/
-├── airflow_dag.png
-├── dashboard.png
-├── kafka_producer.png
-├── kafka_consumer.png
-└── lineage.png
-```
+![1778512942742](image/readme/1778512942742.png)
+
+![1778512964416](image/readme/1778512964416.png)
+
+![1778512976160](image/readme/1778512976160.png)
+
+![1778512990820](image/readme/1778512990820.png)
+
+![1778512997557](image/readme/1778512997557.png)
+
+![1778513008841](image/readme/1778513008841.png)
+
+![1778513017587](image/readme/1778513017587.png)
 
 ---
 
