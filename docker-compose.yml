@@ -1,0 +1,73 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: dataguard_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 6260347112S@m
+      POSTGRES_DB: dataguard
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  airflow:
+    image: apache/airflow:2.9.1
+    container_name: dataguard_airflow
+    restart: always
+
+    depends_on:
+      - postgres
+
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://postgres:6260347112S%40m@postgres:5432/dataguard
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      PYTHONPATH: /opt/airflow/project
+      DB_HOST: postgres
+      DB_NAME: dataguard
+      DB_USER: postgres
+      DB_PASSWORD: 6260347112S@m
+      DB_PORT: 5432
+      
+
+    volumes:
+      - ./:/opt/airflow/project
+      - ./dags:/opt/airflow/dags
+
+    ports:
+      - "8080:8080"
+
+    command: >
+      bash -c "
+      airflow db migrate &&
+      airflow webserver --port 8080 &
+      airflow scheduler
+      "
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: dataguard_zookeeper
+    restart: always
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: dataguard_kafka
+    restart: always
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+volumes:
+  postgres_data:
